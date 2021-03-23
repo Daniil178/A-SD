@@ -50,7 +50,6 @@ int obrabotka(Fare* passanger)
 {
     char *ptr1 = get_str();
     char *ptr = ptr1;
-    printf("%s\n",ptr);
     int p, number, k;
     sscanf(ptr, "%d", &number);
     k = num(number) +1;
