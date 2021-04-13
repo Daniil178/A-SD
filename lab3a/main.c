@@ -43,7 +43,7 @@ int main() {
                 }
                 free(info);
                 break;
-            case 2://Search a specific version of element with 2 keys
+            case 2://Search element with 2 keys
                 printf("Please, enter key1(integer):\n");
                 getInt(&key1);
                 printf("Please, enter key2(string <30 symbols):\n");
