@@ -5,7 +5,7 @@
 const char *MSGS[] = {"0. Quit", "1. Add element", "2. Load from file",
                       "3. Search element","4. Delete element",
                       "5. Search previous element", "6. Print elements between key1, key2",
-                      "7. Print all element", "8. Print tree"};
+                      "7. Print all element", "8. Print tree", "9. For graphiz"};
 const int MSGS_SIZE = sizeof(MSGS) / sizeof(MSGS[0]);
 
 int main() {
@@ -13,6 +13,7 @@ int main() {
     char *info;
     int key, key2;
     Node *root = NULL, *prev, *next, *search;
+    FILE *graph;
     do {
         c = dialog(MSGS, MSGS_SIZE);
         switch(c) {
@@ -90,6 +91,18 @@ int main() {
                     print_beaty_tree(root, 0);
                 else
                     printf("Empty\n");
+                break;
+            case 9:
+                graph = fopen("graph.txt", "w");
+                if(root) {
+                    fprintf(graph, "digraph G {\n");
+                    graphiz(root, graph);
+                    fprintf(graph, "}");
+                    printf("Successful\n");
+                }
+                else
+                    printf("Empty\n");
+                fclose(graph);
                 break;
         }
     } while (c != 0);

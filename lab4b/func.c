@@ -4,6 +4,11 @@
 #include "func.h"
 
 Node Elist = {2147483647, NULL, 1, &Elist, &Elist, NULL};
+Node *cash[8] = {};
+
+int h(int key){
+    return (37*key)%8;
+}
 
 int dialog(const char *msgs[], int n) {
     char *error = "";
@@ -243,6 +248,7 @@ int add_elem(Node **root, int key, char *info){
         }
     }
     rb_insert_fixup(new, root);
+    cash[h(key)] = new;
     return 0;//added
 }
 
@@ -259,8 +265,12 @@ void print_all_versions(List *versions){
 int print_tree(Node *ptr){
     if(ptr == &Elist)
         return 0;
-    printf("Key: %d\n", ptr->key);
-    print_all_versions(ptr->versions);
+    //printf("Key: %d\n", ptr->key);
+    if(ptr->colour == 0)
+		printf("\e[31;1m%d\n\e[0m", ptr->key);
+	else
+		printf("\e[34;1m%d\n\e[0m", ptr->key);
+	print_all_versions(ptr->versions);
     print_tree(ptr->left);
     print_tree(ptr->right);
     return 0;
@@ -268,13 +278,20 @@ int print_tree(Node *ptr){
 
 Node *search_elem(Node *ptr, int key){
     Node *search = NULL;
-    while(ptr != &Elist && search == NULL){
-        if(key < ptr->key)
-            ptr = ptr->left;
-        else if(key > ptr->key)
-            ptr = ptr->right;
-        else
-            search = ptr;
+    if(cash[h(key)] != NULL && cash[h(key)]->key == key) {
+        return cash[h(key)];
+    }
+    else {
+        while (ptr != &Elist && search == NULL) {
+            if (key < ptr->key)
+                ptr = ptr->left;
+            else if (key > ptr->key)
+                ptr = ptr->right;
+            else
+                search = ptr;
+        }
+        if(search != NULL)
+            cash[h(key)] = search;
     }
     return search;
 }
@@ -344,7 +361,9 @@ void delete_elem(Node **root, int key){
         printf("First version deleted\n");
     }
     else{
-		par = delete->parent;
+	if(cash[h(key)]->key == key)
+            cash[h(key)] = NULL;
+	par = delete->parent;
         if(delete->left == &Elist && delete->right == &Elist){
             if(par != &Elist) {
                 if (par->left == delete) {
@@ -465,8 +484,12 @@ int print(int key1, int key2, Node *ptr){
         return 0;
     print(key1, key2, ptr->right);
     if(ptr->key <= key2 && ptr->key >= key1) {
-        printf("key: %d\n", ptr->key);
-        print_all_versions(ptr->versions);
+        //printf("key: %d\n", ptr->key);
+        if(ptr->colour == 0)
+	        printf("\e[31;1m%d\n\e[0m", ptr->key);
+     	else
+         	printf("\e[34;1m%d\n\e[0m", ptr->key);
+		print_all_versions(ptr->versions);
     }
     print(key1, key2, ptr->left);
     return 0;
@@ -477,7 +500,10 @@ int print_beaty_tree(Node *ptr, int probel){
         return 0;
     print_beaty_tree(ptr->right, probel + 1);
     for(int i=0; i<probel;i++, printf("  "));
-    printf("%d\n", ptr->key);
+    if(ptr->colour == 0)
+		printf("\e[31;1m%d\n\e[0m", ptr->key);
+	else
+		printf("\e[34;1m%d\n\e[0m", ptr->key);
     print_beaty_tree(ptr->left, probel + 1);
     return 0;
 }
@@ -490,4 +516,26 @@ Node *create_new(){
     node->right = &Elist;
     node->parent = &Elist;
     return node;
+}
+
+int graphiz(Node *ptr, FILE *graph){
+    if(ptr == &Elist)
+        return 0;
+    else if(ptr->left != &Elist && ptr->right != &Elist){
+        fprintf(graph,"%d -> %d, %d\n", ptr->key, ptr->left->key, ptr->right->key);
+    }
+    else if(ptr->left != &Elist){
+        fprintf(graph,"%d -> %d\n", ptr->key, ptr->left->key);
+    }
+    else if(ptr->right != &Elist){
+        fprintf(graph,"%d -> %d\n", ptr->key, ptr->right->key);
+    }
+    else{
+        if(ptr->parent == &Elist)
+            fprintf(graph,"%d\n", ptr->key);
+        return 0;
+    }
+    graphiz(ptr->left, graph);
+    graphiz(ptr->right, graph);
+    return 0;
 }

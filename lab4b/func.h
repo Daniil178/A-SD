@@ -30,3 +30,4 @@ void right_rotate(Node *x, Node **root);
 int print_beaty_tree(Node *ptr, int probel);
 int print(int key1, int key2, Node *ptr);
 Node *create_new();
+int graphiz(Node *ptr, FILE *graph);
