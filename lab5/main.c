@@ -26,7 +26,7 @@ int main() {
                 q = add_vert(id1, v1, &adj, n);
                 if(q == 0){
                     ++n;
-                    printf("Vertex added\nDo you want write correct to the file?\n(YES - 1, NO - 0)\n");
+                    printf("Vertex added\nDo you want write correct to the file?\n(YES - 1, NO - any number)\n");
                     scanf("%d", &q);
                     if(q == 1)
                         load_to_file(adj, n);
@@ -49,7 +49,7 @@ int main() {
                 else if(q == 1)
                     printf("Error, this edge exist\n");
                 else {
-                    printf("Edge added\nDo you want write correct to the file?\n(YES - 1, NO - 0)\n");
+                    printf("Edge added\nDo you want write correct to the file?\n(YES - 1, NO - any number)\n");
                     scanf("%d", &q);
                     if (q == 1)
                         load_to_file(adj, n);
@@ -67,7 +67,7 @@ int main() {
                 else if(q == -2)
                     printf("Error, this vertex don`t exist\n");
                 else {
-                    printf("Vertex deleted\nDo you want write correct to the file?\n(YES - 1, NO - 0)\n");
+                    printf("Vertex deleted\nDo you want write correct to the file?\n(YES - 1, NO - any number)\n");
                     scanf("%d", &q);
                     if(q == 1)
                         load_to_file(adj, n);
@@ -86,7 +86,7 @@ int main() {
                 else if(q == -2)
                     printf("Error, this edge don`t exist\n");
                 else {
-                    printf("Edge deleted\nDo you want write correct to the file?\n(YES - 1, NO - 0)\n");
+                    printf("Edge deleted\nDo you want write correct to the file?\n(YES - 1, NO - any number)\n");
                     scanf("%d", &q);
                     if (q == 1)
                         load_to_file(adj, n);
@@ -101,7 +101,7 @@ int main() {
                 scanf("%d", &n);
                 getchar();
                 generate_graph(&adj, n, q);
-                printf("Successful\nDo you want write graph to the file?\n(YES - 1, NO - 0)\n");
+                printf("Successful\nDo you want write graph to the file?\n(YES - 1, NO - any number)\n");
                 scanf("%d", &q);
                 if(q == 1)
                     load_to_file(adj, n);
@@ -143,7 +143,11 @@ int main() {
                     printf("You don`t have any edge\n");
                 break;
             case 10:
-                if(load_from_file(&adj, &n) == -1)
+                if(adj != NULL){
+					delete_graph(adj, n);
+					adj = NULL;
+				}	
+				if(load_from_file(&adj, &n) == -1)
                     printf("Error, file don`t exist\n");
                 else
                     printf("Successful\n");
