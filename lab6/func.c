@@ -71,7 +71,7 @@ int insert(int key, Skiplist *list){
         }
         list->level = new->level;
     }
-    for(int i=0; i<list->level; ++i){
+    for(int i=0; i<new->level; ++i){
         new->forwards[i] = update[i]->forwards[i];
         update[i]->forwards[i] = new;
     }
@@ -95,7 +95,7 @@ int delete(int key, Skiplist *list){
             ++i;
         }
         free(x);
-        while(list->level > 1 && list->head->forwards[list->level] == NULL)
+        while(list->level > 1 && list->head->forwards[list->level - 1] == NULL)
             --list->level;
         return 0;
     }
@@ -125,4 +125,25 @@ void delete_list(Skiplist *list){
         free(del);
     }
     free(list);
+}
+
+int print_list(Skiplist *list){
+    Item *x;
+    if(list->head->forwards[0] != NULL) {
+        for(int i=list->level-1; i>=0; --i) {
+            x = list->head;
+            x = x->forwards[0];
+            while (x != NULL) {
+                if(x->level - 1 >= i)
+                    printf("%d  ", x->key);
+                else
+                    printf("   ");
+                x = x->forwards[0];
+            }
+            printf("\n");
+        }
+        return 0;
+    }
+    else
+        return 1;
 }

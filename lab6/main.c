@@ -46,7 +46,7 @@ int main() {
                     printf("key - %d, level - %d\n",x->key, x->level);
                 break;
             case 4:
-                if(print(list) == 1)
+                if(print_list(list) == 1)
                     printf("Empty\n");
                 break;
         }

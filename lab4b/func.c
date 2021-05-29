@@ -235,6 +235,9 @@ int add_elem(Node **root, int key, char *info){
                 ptr = ptr->right;
             } else {
                 ptr->versions = new_version(ptr->versions, info);
+				free(new->versions->info);
+				free(new->versions);
+				free(new);
                 return 1;//updated
             }
         }

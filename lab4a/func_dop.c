@@ -21,6 +21,7 @@ int add_elem(Node **root, char key[100]){
                 ptr = ptr->right;
             } else {
                 ptr->version ++;
+				free(new);
                 return 1;//updated
             }
         }

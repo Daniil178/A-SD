@@ -1,4 +1,4 @@
-#define MAX_LEVEL 16
+#define MAX_LEVEL 4
 
 
 typedef struct Item{
@@ -19,3 +19,4 @@ int insert(int key, Skiplist *list);
 int delete(int key, Skiplist *list);
 void delete_list(Skiplist *list);
 int print(Skiplist *list);
+int print_list(Skiplist *list);
